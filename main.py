@@ -11,6 +11,7 @@ TOKEN = os.getenv('DISCORD_BOT_TOKEN')
 GCP_PROJECT = 'extreme-height-412800'
 GCP_ZONE = 'australia-southeast1-b'
 GCP_VM_NAME = 'palworld2'
+#Create a creds file, will update to use managed identities later
 GCP_CREDENTIALS_FILE = './credentials.json'
 
 # Create a Google Cloud Compute Engine client
@@ -34,9 +35,10 @@ async def start_vm(ctx):
                                                    project=GCP_PROJECT, 
                                                    zone=GCP_ZONE,)
         response = compute_client.start(request=request)
-        await ctx.send(f'Starting VM {GCP_VM_NAME}. Operation status: {response["status"]}')
+        print(response)
+        await ctx.send(f'Starting VM {GCP_VM_NAME}. Operation status: {response}')
     except Exception as e:
-        await ctx.send(f'Error starting VM: {str(e)}')
+        await ctx.send(f'Error starting VM: {e}')
 
 @bot.command(name='stopvm')
 async def stop_vm(ctx):
@@ -45,7 +47,9 @@ async def stop_vm(ctx):
                                                    project=GCP_PROJECT, 
                                                    zone=GCP_ZONE,)
         response = compute_client.stop(request=request)
-        await ctx.send(f'Stopping VM {GCP_VM_NAME}. Operation status: {response["status"]}')
+        await ctx.send(f'Stopping VM {GCP_VM_NAME}. Operation status: {response}')
+        print(response)
+
     except Exception as e:
         await ctx.send(f'Error stopping VM: {str(e)}')
 
